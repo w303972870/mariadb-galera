@@ -35,14 +35,14 @@ ENV CONFIG "-DDEFAULT_CHARSET=utf8 \
 -DWITH_EMBEDDED_SERVER=OFF \
 -DFEATURE_SET=community \
 -DENABLE_DTRACE=OFF \
--DMYSQL_SERVER_SUFFIX="eric_" \
+-DMYSQL_SERVER_SUFFIX='eric_' \
 -DWITH_UNIT_TESTS=0 \
 -DWITHOUT_TOKUDB=ON \
 -DWITHOUT_ROCKSDB=ON \
 -DWITH_PAM=ON \
 -DWITH_INNODB_MEMCACHED=ON \
 -DDOWNLOAD_BOOST=1 \
--DWITH_BOOST="/usr/" \
+-DWITH_BOOST=/usr/ \
 -DWITH_SCALABILITY_METRICS=ON"
 
 RUN apk update && apk add --no-cache --virtual .build-deps \
@@ -59,7 +59,7 @@ RUN apk update && apk add --no-cache --virtual .build-deps \
     && mkdir -p /usr/src \
     && tar -zxC /usr/src -f /root/mariadb-$MARIADB_VERSION.tar.gz \
     && cd /usr/src/mariadb-$MARIADB_VERSION/ && cmake . $CONFIG && make && make install && rm -rf /usr/local/mysql/mysql-test \
-    && rm -rf /root/mariadb-$MARIADB_VERSION.tar.gz && rm -rf /usr/src/mariadb-$MARIADB_VERSION/ && apk del .build-deps 
+    && rm -rf /root/src/ && apk del .build-deps 
 
 
 
