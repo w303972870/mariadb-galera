@@ -3,7 +3,8 @@ MAINTAINER Eric Wang <wdc-zhy@163.com>
 
 ARG PATH=/bin:$PATH
  
-ENV DATA_DIR=/data/database/ LOGS_DIR=/data/logs/ ETC_DIR=/data/etc/
+ENV DATA_DIR=/data/database/ LOGS_DIR=/data/logs/ ETC_DIR=/data/etc/ MARIADB_VERSION=10.3.9
+
 
 RUN  addgroup -S mysql &&\ 
 adduser -D -S -h /var/cache/mysql -s /sbin/nologin -G mysql mysql &&  mkdir -p $DATA_DIR $LOGS_DIR  ${ETC_DIR}
@@ -54,11 +55,11 @@ RUN apk update && apk add --no-cache --virtual .build-deps \
         linux-headers geoip-dev \
         curl libxml2-dev libxslt-dev \
         jemalloc-dev \
-    && curl "https://mirrors.shu.edu.cn/mariadb//mariadb-10.3.9/source/mariadb-10.3.9.tar.gz" -o /root/mariadb-10.3.9.tar.gz \
+    && curl "https://mirrors.shu.edu.cn/mariadb//mariadb-10.3.9/source/mariadb-10.3.9.tar.gz" -o /root/mariadb-$MARIADB_VERSION.tar.gz \
     && mkdir -p /usr/src \
-    && tar -zxC /usr/src -f /root/mariadb-10.3.9.tar.gz \
-    && cd /usr/src/mariadb-10.3.9/ && cmake . $CONFIG && make && make install && rm -rf /usr/local/mysql/mysql-test \
-    && rm -rf /root/mariadb-10.3.9.tar.gz && rm -rf /usr/src/mariadb-10.3.9/ && apk del .build-deps 
+    && tar -zxC /usr/src -f /root/mariadb-$MARIADB_VERSION.tar.gz \
+    && cd /usr/src/mariadb-$MARIADB_VERSION/ && cmake . $CONFIG && make && make install && rm -rf /usr/local/mysql/mysql-test \
+    && rm -rf /root/mariadb-$MARIADB_VERSION.tar.gz && rm -rf /usr/src/mariadb-$MARIADB_VERSION/ && apk del .build-deps 
 
 
 
