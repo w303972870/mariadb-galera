@@ -1,9 +1,12 @@
+## 该版本是mariadb安装组建比较全的一个版本，已经内置了sphinx、MariaDB-Galera和xtrabackup等
+
 ```
-docker pull w303972870/mariadb
+docker pull w303972870/mariadb-galera
 ```
+
 |软件|版本|
 |:---|:---|
-|mariadb|10.2.15|
+|mariadb|10.3.9|
 
 
 #### 启动命令示例：为了初始化必须指定一个默认的root密码MYSQL_ROOT_PASSWORD
