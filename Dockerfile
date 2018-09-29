@@ -46,7 +46,7 @@ ENV CONFIG "\
 RUN addgroup -S mysql && adduser -D -S -h /var/cache/mysql -s /sbin/nologin -G mysql mysql \
     && mkdir -p $DATA_DIR $LOGS_DIR  ${ETC_DIR}apk update && apk add --no-cache --virtual .build-deps \
         gcc g++ cmake libc-dev ncurses-dev bison make openssl-dev pcre-dev zlib-dev linux-headers geoip-dev \
-        curl libxml2-dev libxslt-dev jemalloc-dev \
+        curl   \
     && curl "https://mirrors.shu.edu.cn/mariadb//mariadb-10.3.9/source/mariadb-$MARIADB_VERSION.tar.gz" -o /root/mariadb-$MARIADB_VERSION.tar.gz \
     && mkdir -p /usr/src \
     && tar -zxC /usr/src -f /root/mariadb-$MARIADB_VERSION.tar.gz && rm -rf /root/mariadb-$MARIADB_VERSION.tar.gz \
