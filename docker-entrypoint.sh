@@ -1,53 +1,13 @@
 #!/bin/sh
 chmod 644 /data/etc/my.cnf
-set -eo pipefail
-# set -x
 
-# if command starts with an option, prepend mysqld
-if [ "${1:0:1}" = '-' ]; then
-  set -- /usr/local/mysql/bin/mysqld_safe "$@"
-fi
-
-# usage: file_env VAR [DEFAULT]
-#    ie: file_env 'XYZ_DB_PASSWORD' 'example'
-# (will allow for "$XYZ_DB_PASSWORD_FILE" to fill in the value of
-#  "$XYZ_DB_PASSWORD" from a file, especially for Docker's secrets feature)
-file_env() {
-  var=$1
-  file_var="${var}_FILE"
-  var_value=$(printenv $var || true)
-  file_var_value=$(printenv $file_var || true)
-  default_value=$2
-
-  if [ -n "$var_value" -a -n "$file_var_value" ]; then
-    echo >&2 "error: both $var and $file_var are set (but are exclusive)"
-    exit 1
-  fi
-
-  if [ -z "${var_value}" ]; then
-    if [ -z "${file_var_value}" ]; then
-      export "${var}"="${default_value}"
-    else
-      export "${var}"="${file_var_value}"
-    fi
-  fi
-
-  unset "$file_var"
-}
-
-# Fetch value from server config
-# We use mysqld --verbose --help instead of my_print_defaults because the
-# latter only show values present in config files, and not server defaults
 _get_config() {
   conf="$1"
-  /usr/local/mysql/bin/mysqld --verbose --help --log-bin-index="$(mktemp -u)" 2>/dev/null | awk '$1 == "'"$conf"'" { print $2; exit }'
+   /usr/local/mysql/bin/mysqld --verbose --help --log-bin-index="$(mktemp -u)" 2>/dev/null | awk '$1 == "'"$conf"'" { print $2; exit }'
 }
 
 DATA_DIR="$(_get_config 'datadir')"
-
-# Initialize database if necessary
 if [ ! -d "$DATA_DIR/mysql" ]; then
-  file_env 'MYSQL_ROOT_PASSWORD'
   if [ -z "$MYSQL_ROOT_PASSWORD" -a -z "$MYSQL_ALLOW_EMPTY_PASSWORD" -a -z "$MYSQL_RANDOM_ROOT_PASSWORD" ]; then
     echo >&2 '错误：数据库未初始化，密码选项未指定 '
     echo >&2 '  你需要指定一个 MYSQL_ROOT_PASSWORD, MYSQL_ALLOW_EMPTY_PASSWORD and MYSQL_RANDOM_ROOT_PASSWORD'
@@ -57,20 +17,22 @@ if [ ! -d "$DATA_DIR/mysql" ]; then
   mkdir -p "$DATA_DIR"
   chown mysql: "$DATA_DIR"
 
-  echo '初始化数据库中'
-  /usr/local/mysql/scripts/mysql_install_db --user=mysql --datadir="$DATA_DIR" --force --basedir=/usr/local/mysql/ --rpm
+  echo "初始化数据库中($DATA_DIR)"
+  /usr/local/mysql/bin/mysql_install_db --user=mysql --datadir="$DATA_DIR" --skip-name-resolve --force --basedir=/usr/ --rpm > /data/logs/mysql_install_db.log
   chown -R mysql: "$DATA_DIR"
   echo '数据库初始化完成'
 
   # Start mysqld to config it
-  echo '执行mysqld_safe --defaults-file=/data/etc/my.cnf'
-  /usr/local/mysql/bin/mysqld_safe --defaults-file=/data/etc/my.cnf
+  echo "执行/usr/local/mysql/bin/mysqld_safe --defaults-file=/data/etc/my.cnf --user=mysql --datadir=\"$DATA_DIR\" --skip-name-resolve --basedir=/usr/"
+  /usr/local/mysql/bin/mysqld_safe --defaults-file=/data/etc/my.cnf --user=mysql --datadir="$DATA_DIR" --skip-name-resolve --basedir=/usr/ --skip-networking --nowatch
   echo '执行成功'
+  sleep 3
 
   mysql_options='--protocol=socket -uroot'
 
   if [ -z "$MYSQL_INITDB_SKIP_TZINFO" ]; then
     # sed is for https://bugs.mysql.com/bug.php?id=20545
+    echo "开始设置时区表/usr/local/mysql/bin/mysql_tzinfo_to_sql /usr/share/zoneinfo | sed 's/Local time zone must be set--see zic manual page/FCTY/' | /usr/local/mysql/bin/mysql $mysql_options mysql"
     /usr/local/mysql/bin/mysql_tzinfo_to_sql /usr/share/zoneinfo | \
       sed 's/Local time zone must be set--see zic manual page/FCTY/' | \
       /usr/local/mysql/bin/mysql $mysql_options mysql
@@ -80,6 +42,14 @@ if [ ! -d "$DATA_DIR/mysql" ]; then
     export MYSQL_ROOT_PASSWORD="$(tr -dc _A-Z-a-z-0-9 < /dev/urandom | head -c10)"
     echo "生成root随机密码: $MYSQL_ROOT_PASSWORD"
   fi
+    execute() {
+        statement="$1"
+        if [ -n "$statement" ]; then
+          /usr/local/mysql/bin/mysql -ss $mysql_options -e "$statement"
+        else
+          cat /dev/stdin | /usr/local/mysql/bin/mysql -ss $mysql_options
+       fi
+    }
 
   # Create root user, set root password, drop useless table
   # Delete root user except for
@@ -87,7 +57,6 @@ if [ ! -d "$DATA_DIR/mysql" ]; then
     -- What's done in this file shouldn't be replicated
     --  or products like mysql-fabric won't work
     SET @@SESSION.SQL_LOG_BIN=0;
-
     DELETE FROM mysql.user WHERE user NOT IN ('mysql.sys', 'mysqlxsys', 'root') OR host NOT IN ('localhost') ;
     SET PASSWORD FOR 'root'@'localhost'=PASSWORD('${MYSQL_ROOT_PASSWORD}') ;
     GRANT ALL ON *.* TO 'root'@'localhost' WITH GRANT OPTION ;
@@ -99,7 +68,6 @@ SQL
   export MYSQL_PWD="$MYSQL_ROOT_PASSWORD"
 
   # Create root user for $MYSQL_ROOT_HOST
-  file_env 'MYSQL_ROOT_HOST' '%'
   if [ "$MYSQL_ROOT_HOST" != 'localhost' ]; then
     execute <<SQL
       CREATE USER 'root'@'${MYSQL_ROOT_HOST}' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}' ;
@@ -108,13 +76,9 @@ SQL
 SQL
   fi
 
-  file_env 'MYSQL_DATABASE'
   if [ "$MYSQL_DATABASE" ]; then
     execute "CREATE DATABASE IF NOT EXISTS \`$MYSQL_DATABASE\` ;"
   fi
-
-  file_env 'MYSQL_USER'
-  file_env 'MYSQL_PASSWORD'
   if [ "$MYSQL_USER" -a "$MYSQL_PASSWORD" ]; then
     execute "CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD' ;"
 
@@ -141,8 +105,8 @@ SQL
     esac
     echo
   done
-
-  if ! /usr/local/mysql/bin/mysqladmin -uroot --password="$MYSQL_PWD" shutdown; then
+  echo "尝试关闭数据库：/usr/local/mysql/bin/mysqladmin -uroot -p$MYSQL_PWD shutdown"
+  if ! /usr/local/mysql/bin/mysqladmin -uroot -p$MYSQL_PWD shutdown; then
     echo >&2 '尝试验证停止失败'
     exit 1
   fi
