@@ -5,7 +5,7 @@ set -eo pipefail
 
 # if command starts with an option, prepend mysqld
 if [ "${1:0:1}" = '-' ]; then
-  set -- mysqld_safe "$@"
+  set -- /usr/local/mysql/bin/mysqld_safe "$@"
 fi
 
 # usage: file_env VAR [DEFAULT]
@@ -40,7 +40,7 @@ file_env() {
 # latter only show values present in config files, and not server defaults
 _get_config() {
   conf="$1"
-  mysqld --verbose --help --log-bin-index="$(mktemp -u)" 2>/dev/null | awk '$1 == "'"$conf"'" { print $2; exit }'
+  /usr/local/mysql/bin/mysqld --verbose --help --log-bin-index="$(mktemp -u)" 2>/dev/null | awk '$1 == "'"$conf"'" { print $2; exit }'
 }
 
 DATA_DIR="$(_get_config 'datadir')"
@@ -58,22 +58,22 @@ if [ ! -d "$DATA_DIR/mysql" ]; then
   chown mysql: "$DATA_DIR"
 
   echo '初始化数据库中'
-  mysqld --initialize --user=mysql --datadir="$DATA_DIR" --force --basedir=/usr --rpm
+  /usr/local/mysql/scripts/mysql_install_db --user=mysql --datadir="$DATA_DIR" --force --basedir=/usr/local/mysql/ --rpm
   chown -R mysql: "$DATA_DIR"
   echo '数据库初始化完成'
 
   # Start mysqld to config it
   echo '执行mysqld_safe --defaults-file=/data/etc/my.cnf'
-  mysqld_safe --defaults-file=/data/etc/my.cnf
+  /usr/local/mysql/bin/mysqld_safe --defaults-file=/data/etc/my.cnf
   echo '执行成功'
 
   mysql_options='--protocol=socket -uroot'
 
   if [ -z "$MYSQL_INITDB_SKIP_TZINFO" ]; then
     # sed is for https://bugs.mysql.com/bug.php?id=20545
-    mysql_tzinfo_to_sql /usr/share/zoneinfo | \
+    /usr/local/mysql/bin/mysql_tzinfo_to_sql /usr/share/zoneinfo | \
       sed 's/Local time zone must be set--see zic manual page/FCTY/' | \
-      mysql $mysql_options mysql
+      /usr/local/mysql/bin/mysql $mysql_options mysql
   fi
 
   if [ -n "$MYSQL_RANDOM_ROOT_PASSWORD" ]; then
@@ -142,7 +142,7 @@ SQL
     echo
   done
 
-  if ! mysqladmin -uroot --password="$MYSQL_PWD" shutdown; then
+  if ! /usr/local/mysql/bin/mysqladmin -uroot --password="$MYSQL_PWD" shutdown; then
     echo >&2 '尝试验证停止失败'
     exit 1
   fi
