@@ -50,7 +50,6 @@ RUN addgroup -S mysql && adduser -D -S -h /var/cache/mysql -s /sbin/nologin -G m
     && curl "https://mirrors.shu.edu.cn/mariadb//mariadb-10.3.9/source/mariadb-$MARIADB_VERSION.tar.gz" -o /root/mariadb-$MARIADB_VERSION.tar.gz \
     && mkdir -p /usr/src \
     && tar -zxC /usr/src -f /root/mariadb-$MARIADB_VERSION.tar.gz && rm -rf /root/mariadb-$MARIADB_VERSION.tar.gz \
-    && add perl && perl -MCPAN -e 'install DBI' -0 yes \
     && cd /usr/src/mariadb-$MARIADB_VERSION/ && cmake . $CONFIG && make && make install && cd / && rm -rf /usr/local/mysql/mysql-test \
     && rm -rf /usr/src/ && rm -rf /usr/local/mysql/COPYING* /usr/local/mysql/README* \
     /usr/local/mysql/CREDITS /usr/local/mysql/EXCEPTIONS-CLIENT /usr/local/mysql/INSTALL-BINARY && rm -rf /var/cache/apk/*  && apk del .build-deps 
