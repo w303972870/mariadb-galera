@@ -18,13 +18,13 @@ if [ ! -d "$DATA_DIR/mysql" ]; then
   chown mysql: "$DATA_DIR"
 
   echo "初始化数据库中($DATA_DIR)"
-  /usr/local/mysql/bin/mysql_install_db --user=mysql --datadir="$DATA_DIR" --skip-name-resolve --force --basedir=/usr/ --rpm > /data/logs/mysql_install_db.log
+  /usr/local/mysql/bin/mysql_install_db --user=mysql --datadir="$DATA_DIR" --skip-name-resolve --force --basedir=/usr/local/mysql/ --rpm > /data/logs/mysql_install_db.log
   chown -R mysql: "$DATA_DIR"
   echo '数据库初始化完成'
 
   # Start mysqld to config it
   echo "执行/usr/local/mysql/bin/mysqld_safe --defaults-file=/data/etc/my.cnf --user=mysql --datadir=\"$DATA_DIR\" --skip-name-resolve --basedir=/usr/"
-  /usr/local/mysql/bin/mysqld_safe --defaults-file=/data/etc/my.cnf --user=mysql --datadir="$DATA_DIR" --skip-name-resolve --basedir=/usr/ --skip-networking --nowatch
+  /usr/local/mysql/bin/mysqld_safe --defaults-file=/data/etc/my.cnf --user=mysql --datadir="$DATA_DIR" --skip-name-resolve --basedir=/usr/local/mysql/ --skip-networking --nowatch
   echo '执行成功'
   sleep 3
 
@@ -57,9 +57,9 @@ if [ ! -d "$DATA_DIR/mysql" ]; then
     -- What's done in this file shouldn't be replicated
     --  or products like mysql-fabric won't work
     SET @@SESSION.SQL_LOG_BIN=0;
-    DELETE FROM mysql.user WHERE user NOT IN ('mysql.sys', 'mysqlxsys', 'root') OR host NOT IN ('localhost') ;
-    SET PASSWORD FOR 'root'@'localhost'=PASSWORD('${MYSQL_ROOT_PASSWORD}') ;
-    GRANT ALL ON *.* TO 'root'@'localhost' WITH GRANT OPTION ;
+    DELETE FROM mysql.user WHERE user NOT IN ('mysql.sys', 'mysqlxsys', 'root') OR host NOT IN ('localhost','127.0.0.1') or User='' or Password='' ;
+    GRANT ALL PRIVILEGES ON *.* TO 'root'@'127.0.0.1' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}' WITH GRANT OPTION;
+    GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}' WITH GRANT OPTION;
     DROP DATABASE IF EXISTS test ;
     FLUSH PRIVILEGES ;
 SQL
