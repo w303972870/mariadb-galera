@@ -7,6 +7,7 @@ ENV DATA_DIR=/data/database/ LOGS_DIR=/data/logs/ ETC_DIR=/data/etc/ MARIADB_VER
 
 ADD Dockerfile /root/
 ADD my.cnf $ETC_DIR
+COPY docker-entrypoint.sh /usr/local/bin/ 
 
 ENV CONFIG "\
     -DDEFAULT_CHARSET=utf8 \
