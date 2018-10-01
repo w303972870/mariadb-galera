@@ -18,12 +18,12 @@ if [ ! -d "$DATA_DIR/mysql" ]; then
   chown mysql: "$DATA_DIR"
 
   echo "初始化数据库中($DATA_DIR)"
-  /usr/local/mysql/bin/mysql_install_db --user=mysql --datadir="$DATA_DIR" --skip-name-resolve --force --basedir=/usr/local/mysql/ --rpm > /data/logs/mysql_install_db.log
+  /usr/local/mysql/scripts/mysql_install_db --user=mysql --datadir="$DATA_DIR" --skip-name-resolve --force --basedir=/usr/local/mysql/ --rpm > /data/logs/mysql_install_db.log
   chown -R mysql: "$DATA_DIR"
   echo '数据库初始化完成'
 
   # Start mysqld to config it
-  echo "执行/usr/local/mysql/bin/mysqld_safe --defaults-file=/data/etc/my.cnf --user=mysql --datadir=\"$DATA_DIR\" --skip-name-resolve --basedir=/usr/"
+  echo "执行启动/usr/local/mysql/bin/mysqld_safe --defaults-file=/data/etc/my.cnf --user=mysql --datadir="$DATA_DIR" --skip-name-resolve --basedir=/usr/local/mysql/ --skip-networking --nowatch"
   /usr/local/mysql/bin/mysqld_safe --defaults-file=/data/etc/my.cnf --user=mysql --datadir="$DATA_DIR" --skip-name-resolve --basedir=/usr/local/mysql/ --skip-networking --nowatch
   echo '执行成功'
   sleep 3

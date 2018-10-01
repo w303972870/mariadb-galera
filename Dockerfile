@@ -63,8 +63,11 @@ ADD libssl.so.1.0.0 /usr/lib/
 ADD libstdc++.so.6 /usr/lib/
 
  
+ENTRYPOINT ["docker-entrypoint.sh"]
 
+EXPOSE 3306
 
+CMD ["/usr/local/mysql/bin/mysqld_safe" ,  "--defaults-file=/data/etc/my.cnf" ,  "--basedir=/usr/local/mysql/"]
 
 
 
