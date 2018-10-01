@@ -49,7 +49,7 @@ ENV CONFIG "\
 
 RUN addgroup -S mysql && adduser -D -S -h /var/cache/mysql -s /sbin/nologin -G mysql mysql \
     && mkdir -p $DATA_DIR $LOGS_DIR  ${ETC_DIR}apk update && apk add --no-cache --virtual .build-deps \
-        cmake gcc g++ make bison openssl-dev libxml2-dev ncurses-dev linux-headers curl tzdata \
+        cmake gcc g++ make bison libexecinfo-dev openssl-dev libxml2-dev ncurses-dev linux-headers curl tzdata \
     && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo "Asia/Shanghai" > /etc/timezone \
     && curl "https://mirrors.shu.edu.cn/mariadb//mariadb-10.3.9/source/mariadb-$MARIADB_VERSION.tar.gz" -o /root/mariadb-$MARIADB_VERSION.tar.gz \
     && mkdir -p /usr/src \
