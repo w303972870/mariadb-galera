@@ -68,7 +68,7 @@ SQL
   export MYSQL_PWD="$MYSQL_ROOT_PASSWORD"
 
   # Create root user for $MYSQL_ROOT_HOST
-  if [ "$MYSQL_ROOT_HOST" != 'localhost' ]; then
+  if [ "$MYSQL_ROOT_HOST" != '127.0.0.1' ]; then
     execute <<SQL
       CREATE USER 'root'@'${MYSQL_ROOT_HOST}' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}' ;
       GRANT ALL ON *.* TO 'root'@'${MYSQL_ROOT_HOST}' WITH GRANT OPTION ;
