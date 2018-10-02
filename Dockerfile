@@ -7,6 +7,14 @@ ENV DATA_DIR=/data/database/ LOGS_DIR=/data/logs/ ETC_DIR=/data/etc/ MARIADB_VER
 
 ADD Dockerfile /root/
 ADD my.cnf $ETC_DIR
+
+ADD libcrypto.so.1.0.0 /lib/
+ADD libgcc_s.so.1 /usr/lib/
+ADD libssl.so.1.0.0 /usr/lib/
+ADD libstdc++.so.6 /usr/lib/
+ADD libncursesw.so.6.1 /usr/lib/
+ADD ld-musl-x86_64.so.1 /lib/
+
 COPY docker-entrypoint.sh /usr/local/bin/ 
 
 ENV CONFIG "\
@@ -58,14 +66,9 @@ RUN addgroup -S mysql && adduser -D -S -h /var/cache/mysql -s /sbin/nologin -G m
     && tar -zxC /usr/src -f /root/mariadb-$MARIADB_VERSION.tar.gz && rm -rf /root/mariadb-$MARIADB_VERSION.tar.gz \
     && cd /usr/src/mariadb-$MARIADB_VERSION/ && cmake . $CONFIG && make && make install && cd / && rm -rf /usr/local/mysql/mysql-test \
     && rm -rf /usr/src/ && rm -rf /usr/local/mysql/COPYING* /usr/local/mysql/README* \
-    /usr/local/mysql/CREDITS /usr/local/mysql/EXCEPTIONS-CLIENT /usr/local/mysql/INSTALL-BINARY && rm -rf /var/cache/apk/*  \
-    && chmod +x /usr/local/bin/docker-entrypoint.sh
+    /usr/local/mysql/CREDITS /usr/local/mysql/EXCEPTIONS-CLIENT /usr/local/mysql/INSTALL-BINARY && apk del .build-deps && rm -rf /var/cache/apk/*  \
+    && chmod +x /usr/local/bin/docker-entrypoint.sh && ln -s /usr/lib/libncursesw.so.6.1 /usr/lib/libncursesw.so.6
 
-
-ADD libcrypto.so.1.0.0 /lib/
-ADD libgcc_s.so.1 /usr/lib/
-ADD libssl.so.1.0.0 /usr/lib/
-ADD libstdc++.so.6 /usr/lib/
 
  
 ENTRYPOINT ["docker-entrypoint.sh"]
