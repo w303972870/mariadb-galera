@@ -40,7 +40,7 @@ ENV CONFIG "\
     -DWITH_EMBEDDED_SERVER=OFF \
     -DFEATURE_SET=community \
     -DENABLE_DTRACE=OFF \
-    -DMYSQL_SERVER_SUFFIX='-******Eric.Wang******-' \
+    -DMYSQL_SERVER_SUFFIX='-******王殿臣的数据库******-' \
     -DWITH_UNIT_TESTS=0 \
     -DWITHOUT_TOKUDB=ON \
     -DWITHOUT_ROCKSDB=ON \
@@ -58,7 +58,10 @@ RUN addgroup -S mysql && adduser -D -S -h /var/cache/mysql -s /sbin/nologin -G m
     && curl "https://mirrors.shu.edu.cn/mariadb//mariadb-$MARIADB_VERSION/source/mariadb-$MARIADB_VERSION.tar.gz" -o /root/mariadb-$MARIADB_VERSION.tar.gz \
     && mkdir -p /usr/src \
     && tar -zxC /usr/src -f /root/mariadb-$MARIADB_VERSION.tar.gz && rm -rf /root/mariadb-$MARIADB_VERSION.tar.gz \
-    && cd /usr/src/mariadb-$MARIADB_VERSION/ && cmake . $CONFIG && make && make install && cd / && rm -rf /usr/local/mysql/mysql-test \
+    && cd /usr/src/mariadb-$MARIADB_VERSION/ \
+    && sed -i "s|Welcome to the MariaDB monitor|欢迎进入MariaDB|" client/mysql.cc    \ 
+    && sed -i "s|Oracle, MariaDB Corporation Ab and others|Oracle, MariaDB版权信息声明|" include/welcome_copyright_notice.h    \ 
+    && cmake . $CONFIG && make && make install && cd / && rm -rf /usr/local/mysql/mysql-test \
     && rm -rf /usr/src/ && rm -rf /usr/local/mysql/COPYING* /usr/local/mysql/README* \
     /usr/local/mysql/CREDITS /usr/local/mysql/EXCEPTIONS-CLIENT /usr/local/mysql/INSTALL-BINARY && apk del .build-deps && rm -rf /var/cache/apk/*  \
     && chmod +x /usr/local/bin/docker-entrypoint.sh 
