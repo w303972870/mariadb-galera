@@ -8,12 +8,6 @@ ENV DATA_DIR=/data/database/ LOGS_DIR=/data/logs/ ETC_DIR=/data/etc/ MARIADB_VER
 ADD Dockerfile /root/
 ADD my.cnf $ETC_DIR
 
-ADD libcrypto.so.1.0.0 /lib/
-ADD libgcc_s.so.1 /usr/lib/
-ADD libssl.so.1.0.0 /usr/lib/
-ADD libstdc++.so.6 /usr/lib/
-ADD libncursesw.so.6.1 /usr/lib/
-ADD ld-musl-x86_64.so.1 /lib/
 
 COPY docker-entrypoint.sh /usr/local/bin/ 
 
@@ -61,15 +55,22 @@ RUN addgroup -S mysql && adduser -D -S -h /var/cache/mysql -s /sbin/nologin -G m
     && mkdir -p $DATA_DIR $LOGS_DIR  ${ETC_DIR}apk update && apk add --no-cache --virtual .build-deps \
         cmake gcc g++ make bison openssl-dev libxml2-dev ncurses-dev linux-headers curl tzdata \
     && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo "Asia/Shanghai" > /etc/timezone \
-    && curl "https://mirrors.shu.edu.cn/mariadb//mariadb-10.3.9/source/mariadb-$MARIADB_VERSION.tar.gz" -o /root/mariadb-$MARIADB_VERSION.tar.gz \
+    && curl "https://mirrors.shu.edu.cn/mariadb//mariadb-$MARIADB_VERSION/source/mariadb-$MARIADB_VERSION.tar.gz" -o /root/mariadb-$MARIADB_VERSION.tar.gz \
     && mkdir -p /usr/src \
     && tar -zxC /usr/src -f /root/mariadb-$MARIADB_VERSION.tar.gz && rm -rf /root/mariadb-$MARIADB_VERSION.tar.gz \
     && cd /usr/src/mariadb-$MARIADB_VERSION/ && cmake . $CONFIG && make && make install && cd / && rm -rf /usr/local/mysql/mysql-test \
     && rm -rf /usr/src/ && rm -rf /usr/local/mysql/COPYING* /usr/local/mysql/README* \
     /usr/local/mysql/CREDITS /usr/local/mysql/EXCEPTIONS-CLIENT /usr/local/mysql/INSTALL-BINARY && apk del .build-deps && rm -rf /var/cache/apk/*  \
-    && chmod +x /usr/local/bin/docker-entrypoint.sh && ln -s /usr/lib/libncursesw.so.6.1 /usr/lib/libncursesw.so.6
+    && chmod +x /usr/local/bin/docker-entrypoint.sh 
 
+ADD libcrypto.so.1.0.0 /lib/
+ADD libgcc_s.so.1 /usr/lib/
+ADD libssl.so.1.0.0 /usr/lib/
+ADD libstdc++.so.6 /usr/lib/
+ADD libncursesw.so.6.1 /usr/lib/
+ADD ld-musl-x86_64.so.1 /lib/
 
+RUN ln -s /usr/lib/libncursesw.so.6.1 /usr/lib/libncursesw.so.6
  
 ENTRYPOINT ["docker-entrypoint.sh"]
 

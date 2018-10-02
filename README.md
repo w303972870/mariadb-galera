@@ -30,7 +30,6 @@ docker run -dit -p 3306:3306 -v /data/mariadb/:/data/ -e MYSQL_ROOT_HOST=127.0.0
 ### 日志目录：/data/logs/
 ### 默认配置文件：/data/etc/my.cnf
 
-默认配置文件已开启sphinx引擎，如果没有开启可通过命令： INSTALL PLUGIN sphinx SONAME 'ha_sphinx.so'; 安装，使用命令show engines;查看
 
 ### 已开放3306端口
 
