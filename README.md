@@ -238,19 +238,19 @@ default-character-set = utf8mb4
 
 ### MariaDB [(none)]> show ENGINES;
 
-+--------------------+---------+----------------------------------------------------------------------------------+--------------+------+------------+
-| Engine             | Support | Comment                                                                          | Transactions | XA   | Savepoints |
-+--------------------+---------+----------------------------------------------------------------------------------+--------------+------+------------+
-| MEMORY             | YES     | Hash based, stored in memory, useful for temporary tables                        | NO           | NO   | NO         |
-| MRG_MyISAM         | YES     | Collection of identical MyISAM tables                                            | NO           | NO   | NO         |
-| CSV                | YES     | Stores tables as CSV files                                                       | NO           | NO   | NO         |
-| BLACKHOLE          | YES     | /dev/null storage engine (anything you write to it disappears)                   | NO           | NO   | NO         |
-| MyISAM             | YES     | Non-transactional engine with good performance and small data footprint          | NO           | NO   | NO         |
-| ARCHIVE            | YES     | gzip-compresses tables for a low storage footprint                               | NO           | NO   | NO         |
-| FEDERATED          | YES     | Allows to access tables on other MariaDB servers, supports transactions and more | YES          | NO   | YES        |
-| PERFORMANCE_SCHEMA | YES     | Performance Schema                                                               | NO           | NO   | NO         |
-| SEQUENCE           | YES     | Generated tables filled with sequential values                                   | YES          | NO   | YES        |
-| InnoDB             | DEFAULT | Supports transactions, row-level locking, foreign keys and encryption for tables | YES          | YES  | YES        |
-| Aria               | YES     | Crash-safe tables with MyISAM heritage                                           | NO           | NO   | NO         |
-| SPHINX             | YES     | Sphinx storage engine 2.2.6-release                                              | NO           | NO   | NO         |
-+--------------------+---------+----------------------------------------------------------------------------------+--------------+------+------------+
++--------------------+---------+--------------+------+------------+
+| Engine             | Support | Transactions | XA   | Savepoints |
++--------------------+---------+--------------+------+------------+
+| MEMORY             | YES     | NO           | NO   | NO         |
+| MRG_MyISAM         | YES     | NO           | NO   | NO         |
+| CSV                | YES     | NO           | NO   | NO         |
+| BLACKHOLE          | YES     | NO           | NO   | NO         |
+| MyISAM             | YES     | NO           | NO   | NO         |
+| ARCHIVE            | YES     | NO           | NO   | NO         |
+| FEDERATED          | YES     | YES          | NO   | YES        |
+| PERFORMANCE_SCHEMA | YES     | NO           | NO   | NO         |
+| SEQUENCE           | YES     | YES          | NO   | YES        |
+| InnoDB             | DEFAULT | YES          | YES  | YES        |
+| Aria               | YES     | NO           | NO   | NO         |
+| SPHINX             | YES     | NO           | NO   | NO         |
++--------------------+---------+--------------+------+------------+
