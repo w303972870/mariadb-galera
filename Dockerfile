@@ -72,8 +72,9 @@ ADD libssl.so.1.0.0 /usr/lib/
 ADD libstdc++.so.6 /usr/lib/
 ADD libncursesw.so.6.1 /usr/lib/
 ADD ld-musl-x86_64.so.1 /lib/
+ADD libxml2.so.2.9.8 /usr/lib/
 
-RUN ln -s /usr/lib/libncursesw.so.6.1 /usr/lib/libncursesw.so.6
+RUN ln -s /usr/lib/libncursesw.so.6.1 /usr/lib/libncursesw.so.6 && ln -s /usr/lib/libxml2.so.2.9.8 /usr/lib/libxml2.so.2
  
 ENTRYPOINT ["docker-entrypoint.sh"]
 

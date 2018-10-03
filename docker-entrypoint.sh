@@ -60,6 +60,9 @@ if [ ! -d "$DATA_DIR/mysql" ]; then
     DELETE FROM mysql.user WHERE user NOT IN ('mysql.sys', 'mysqlxsys', 'root') OR host NOT IN ('localhost','127.0.0.1') or User='' or Password='' ;
     GRANT ALL PRIVILEGES ON *.* TO 'root'@'127.0.0.1' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}' WITH GRANT OPTION;
     GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}' WITH GRANT OPTION;
+    INSTALL PLUGIN sphinx SONAME 'ha_sphinx.so';
+    INSTALL PLUGIN server_audit SONAME 'server_audit.so';
+    INSTALL PLUGIN query_cache_info SONAME 'query_cache_info.so'; 
     DROP DATABASE IF EXISTS test ;
     FLUSH PRIVILEGES ;
 SQL
