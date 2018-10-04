@@ -10,6 +10,7 @@ ADD my.cnf $ETC_DIR
 
 
 COPY docker-entrypoint.sh /usr/local/bin/ 
+COPY wsrep-notify.sh /usr/local/bin/ 
 
 ENV CONFIG "\
     -DDEFAULT_CHARSET=utf8 \
@@ -64,7 +65,8 @@ RUN addgroup -S mysql && adduser -D -S -h /var/cache/mysql -s /sbin/nologin -G m
     && cmake . $CONFIG && make && make install && cd / && rm -rf /usr/local/mysql/mysql-test \
     && rm -rf /usr/src/ && rm -rf /usr/local/mysql/COPYING* /usr/local/mysql/README* \
     /usr/local/mysql/CREDITS /usr/local/mysql/EXCEPTIONS-CLIENT /usr/local/mysql/INSTALL-BINARY && apk del .build-deps && rm -rf /var/cache/apk/*  \
-    && chmod +x /usr/local/bin/docker-entrypoint.sh 
+    && chmod +x /usr/local/bin/docker-entrypoint.sh && chmod +x /usr/local/bin/wsrep-notify.sh && chown mysql:mysql /usr/local/bin/wsrep-notify.sh \
+    && chmod 700 /usr/local/bin/wsrep-notify.sh
 
 ADD libcrypto.so.1.0.0 /lib/
 ADD libgcc_s.so.1 /usr/lib/
