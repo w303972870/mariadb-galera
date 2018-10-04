@@ -123,9 +123,12 @@ SQL
 fi
 
 chown -R mysql: "$DATA_DIR"
-if [ "$WSREP-NEW-CLUSTER" == 'yes' ]; then
+
+if [ "$WSREP_NEW_CLUSTER" == 'yes' ]; then
+    echo "WSREP_NEW_CLUSTER yes:$WSREP_NEW_CLUSTER"
     /usr/local/mysql/bin/mysqld_safe --defaults-file=/data/etc/my.cnf --basedir=/usr/local/mysql/ --wsrep-new-cluster
 else
+    echo "WSREP_NEW_CLUSTER no:$WSREP_NEW_CLUSTER"
     /usr/local/mysql/bin/mysqld_safe --defaults-file=/data/etc/my.cnf --basedir=/usr/local/mysql/
 fi
 exec "$@"
