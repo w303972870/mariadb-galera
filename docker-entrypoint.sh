@@ -5,7 +5,7 @@ _get_config() {
   conf="$1"
    /usr/local/mysql/bin/mysqld --verbose --help --log-bin-index="$(mktemp -u)" 2>/dev/null | awk '$1 == "'"$conf"'" { print $2; exit }'
 }
-
+WSREP-NEW-CLUSTER="no"
 DATA_DIR="$(_get_config 'datadir')"
 if [ ! -d "$DATA_DIR/mysql" ]; then
   if [ -z "$MYSQL_ROOT_PASSWORD" -a -z "$MYSQL_ALLOW_EMPTY_PASSWORD" -a -z "$MYSQL_RANDOM_ROOT_PASSWORD" ]; then
@@ -123,4 +123,9 @@ SQL
 fi
 
 chown -R mysql: "$DATA_DIR"
+if [ "$WSREP-NEW-CLUSTER" == 'yes' ]; then
+    /usr/local/mysql/bin/mysqld_safe --defaults-file=/data/etc/my.cnf --basedir=/usr/local/mysql/ --wsrep-new-cluster
+else
+    /usr/local/mysql/bin/mysqld_safe --defaults-file=/data/etc/my.cnf --basedir=/usr/local/mysql/
+fi
 exec "$@"

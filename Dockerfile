@@ -77,12 +77,12 @@ ADD ld-musl-x86_64.so.1 /lib/
 ADD libxml2.so.2.9.8 /usr/lib/
 
 RUN ln -s /usr/lib/libncursesw.so.6.1 /usr/lib/libncursesw.so.6 && ln -s /usr/lib/libxml2.so.2.9.8 /usr/lib/libxml2.so.2
- 
-ENTRYPOINT ["docker-entrypoint.sh"]
 
 EXPOSE 3306
 
-CMD ["/usr/local/mysql/bin/mysqld_safe" ,  "--defaults-file=/data/etc/my.cnf" ,  "--basedir=/usr/local/mysql/"]
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+
 
 
 

@@ -12,7 +12,7 @@ docker pull w303972870/mariadb-galera
 #### 启动命令示例：为了初始化必须指定一个默认的root密码MYSQL_ROOT_PASSWORD
 
 ```
-docker run -dit -p 3306:3306 -v /data/mariadb/:/data/ -e MYSQL_ROOT_HOST=192.168.12.% -e MYSQL_ROOT_PASSWORD=123456 docker.io/w303972870/mariadb-galera
+docker run -dit -p 3306:3306 -v /data/mariadb/:/data/ -e MYSQL_ROOT_HOST=192.168.12.% -e MYSQL_ROOT_PASSWORD=123456 -e WSREP-NEW-CLUSTER=yes docker.io/w303972870/mariadb-galera
 ```
 |变量|解释|
 |:---|:---|
@@ -23,6 +23,7 @@ docker run -dit -p 3306:3306 -v /data/mariadb/:/data/ -e MYSQL_ROOT_HOST=192.168
 |MYSQL_DATABASE|默认创建一个数据库|
 |MYSQL_USER|新建一个用户|
 |MYSQL_PASSWORD|新建用户的密码|
+|WSREP-NEW-CLUSTER|集群用参，启动集群第一台时该值传入yes其他传入no即可|
 
 ### 启动之后，需要mysql -h 127.0.0.1 -p3306 -u root连接容器mysql后重新配置访问限制，
 
