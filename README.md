@@ -147,14 +147,14 @@ myisam_max_sort_file_size = 10G
 myisam_repair_threads = 1
 myisam_recover_options=force
 
-#***************************** INNODB Specific options ****************************
+# ***************************** INNODB Specific options ****************************
 innodb_file_per_table = 1
 innodb_strict_mode = 1
 innodb_flush_method = O_DIRECT
 innodb_checksum_algorithm=crc32
 innodb_autoinc_lock_mode=2
 
-####Buffer Pool options
+#### Buffer Pool options
 innodb_buffer_pool_size = 4G
 innodb_buffer_pool_instances = 2
 innodb_max_dirty_pages_pct = 90
@@ -164,7 +164,7 @@ innodb_lru_scan_depth = 4096
 #innodb_change_buffering = inserts
 innodb_old_blocks_time = 1000
 
-####Redo options
+#### Redo options
 innodb_log_group_home_dir = /data/logs/
 innodb_log_buffer_size = 64M
 innodb_log_file_size = 2G
@@ -172,28 +172,28 @@ innodb_log_files_in_group = 3
 innodb_flush_log_at_trx_commit = 1
 innodb_fast_shutdown = 2
 
-####Transaction options
+#### Transaction options
 innodb_thread_concurrency = 0
 innodb_lock_wait_timeout = 120
 innodb_rollback_on_timeout = 1
 transaction_isolation = READ-COMMITTED
 
-####IO options
+#### IO options
 innodb_read_io_threads = 8
 innodb_write_io_threads = 16
 innodb_io_capacity = 20000
 innodb_use_native_aio = 1
 
-####Undo options
+#### Undo options
 innodb_purge_threads = 4
 innodb_purge_batch_size = 512
 innodb_max_purge_lag = 65536
 
-####mariadb
+#### mariadb
 gtid_strict_mode=on
 gtid_domain_id=191
 
-####galera
+#### galera
 wsrep_on=on
 wsrep_provider_options="gcache.size=1G"
 
@@ -238,19 +238,19 @@ default-character-set = utf8mb4
 
 ### MariaDB [(none)]> show ENGINES;
 
-+--------------------+---------+--------------+------+------------+
-| Engine             | Support | Transactions | XA   | Savepoints |
-+--------------------+---------+--------------+------+------------+
-| MEMORY             | YES     | NO           | NO   | NO         |
-| MRG_MyISAM         | YES     | NO           | NO   | NO         |
-| CSV                | YES     | NO           | NO   | NO         |
-| BLACKHOLE          | YES     | NO           | NO   | NO         |
-| MyISAM             | YES     | NO           | NO   | NO         |
-| ARCHIVE            | YES     | NO           | NO   | NO         |
-| FEDERATED          | YES     | YES          | NO   | YES        |
-| PERFORMANCE_SCHEMA | YES     | NO           | NO   | NO         |
-| SEQUENCE           | YES     | YES          | NO   | YES        |
-| InnoDB             | DEFAULT | YES          | YES  | YES        |
-| Aria               | YES     | NO           | NO   | NO         |
-| SPHINX             | YES     | NO           | NO   | NO         |
-+--------------------+---------+--------------+------+------------+
+
+|Engine|Support|Transactions|XA|Savepoints|
+|:---|:---|:---|:---|:---|
+|MEMORY             |YES    |NO |NO |NO |
+|MRG_MyISAM         |YES    |NO |NO |NO |
+|CSV                |YES    |NO |NO |NO |
+|BLACKHOLE          |YES    |NO |NO |NO |
+|MyISAM             |YES    |NO |NO |NO |
+|ARCHIVE            |YES    |NO |NO |NO |
+|FEDERATED          |YES    |YES|NO |YES|
+|PERFORMANCE_SCHEMA |YES    |NO |NO |NO |
+|SEQUENCE           |YES    |YES|NO |YES|
+|InnoDB             |DEFAULT|YES|YES|YES|
+|Aria               |YES    |NO |NO |NO |
+|SPHINX             |YES    |NO |NO |NO |
+

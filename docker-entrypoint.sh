@@ -22,6 +22,8 @@ if [ ! -d "$DATA_DIR/mysql" ]; then
   chown -R mysql: "$DATA_DIR"
   echo '数据库初始化完成'
 
+  sed -i "s|server_audit_file_path|#server_audit_file_path|" /data/etc/my.cnf
+
   # Start mysqld to config it
   echo "执行启动/usr/local/mysql/bin/mysqld_safe --defaults-file=/data/etc/my.cnf --user=mysql --datadir="$DATA_DIR" --skip-name-resolve --basedir=/usr/local/mysql/ --skip-networking --nowatch"
   /usr/local/mysql/bin/mysqld_safe --defaults-file=/data/etc/my.cnf --user=mysql --datadir="$DATA_DIR" --skip-name-resolve --basedir=/usr/local/mysql/ --skip-networking --nowatch
@@ -117,6 +119,7 @@ SQL
   echo
   echo '数据库初始化完成，等待启动.'
   echo
+  sed -i "s|#server_audit_file_path|server_audit_file_path|" /data/etc/my.cnf
 fi
 
 chown -R mysql: "$DATA_DIR"
