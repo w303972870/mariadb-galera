@@ -126,7 +126,7 @@ chown -R mysql: "$DATA_DIR"
 
 if [ "$WSREP_NEW_CLUSTER" == 'yes' ]; then
     echo "WSREP_NEW_CLUSTER yes:$WSREP_NEW_CLUSTER"
-    /usr/local/mysql/bin/mysqld_safe --defaults-file=/data/etc/my.cnf --basedir=/usr/local/mysql/ --wsrep-new-cluster
+    /usr/local/mysql/bin/mysqld_safe --defaults-file=/data/etc/my.cnf --basedir=/usr/local/mysql/ --wsrep-new-cluster  --wsrep-cluster-address="gcomm://"
 else
     echo "WSREP_NEW_CLUSTER no:$WSREP_NEW_CLUSTER"
     /usr/local/mysql/bin/mysqld_safe --defaults-file=/data/etc/my.cnf --basedir=/usr/local/mysql/
