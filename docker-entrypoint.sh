@@ -7,7 +7,6 @@ _get_config() {
   conf="$1"
    /usr/local/mysql/bin/mysqld --verbose --help --log-bin-index="$(mktemp -u)" 2>/dev/null | awk '$1 == "'"$conf"'" { print $2; exit }'
 }
-WSREP_NEW_CLUSTER="no"
 DATA_DIR="$(_get_config 'datadir')"
 if [ ! -d "$DATA_DIR/mysql" ]; then
   if [ -z "$MYSQL_ROOT_PASSWORD" -a -z "$MYSQL_ALLOW_EMPTY_PASSWORD" -a -z "$MYSQL_RANDOM_ROOT_PASSWORD" ]; then
@@ -126,7 +125,7 @@ fi
 
 chown -R mysql: "$DATA_DIR"
 
-if [ "$WSREP_NEW_CLUSTER" == 'yes' ]; then
+if [[ ! -z "$WSREP_NEW_CLUSTER" ]] && [[ "$WSREP_NEW_CLUSTER" == "yes" ]];
     echo "WSREP_NEW_CLUSTER yes:$WSREP_NEW_CLUSTER"
     /usr/local/mysql/bin/mysqld_safe --defaults-file=/data/etc/my.cnf --basedir=/usr/local/mysql/ --wsrep-new-cluster  --wsrep-cluster-address="gcomm://"
 else
