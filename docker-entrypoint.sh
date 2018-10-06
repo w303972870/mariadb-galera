@@ -1,4 +1,6 @@
 #!/usr/bin/bash
+set -e
+
 chmod 644 /data/etc/my.cnf
 
 _get_config() {
