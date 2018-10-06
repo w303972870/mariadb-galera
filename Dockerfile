@@ -99,7 +99,7 @@ RUN groupadd mysql && useradd -r -g mysql -s /bin/false mysql \
     /usr/local/mysql/bin/mbstream \
     /usr/local/mysql/bin/innochecksum \
     && chmod +x /usr/local/bin/docker-entrypoint.sh && chmod +x /usr/local/bin/wsrep-notify.sh && chown mysql:mysql /usr/local/bin/wsrep-notify.sh \
-    && chmod 700 /usr/local/bin/wsrep-notify.sh
+    && chmod 700 /usr/local/bin/wsrep-notify.sh && yum clean all
 
 
 EXPOSE 3306
