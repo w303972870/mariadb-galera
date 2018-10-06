@@ -89,9 +89,7 @@ RUN groupadd mysql && useradd -r -g mysql -s /bin/false mysql \
     /usr/local/mysql/bin/mysqlbinlog \
     /usr/local/mysql/bin/mysqlshow \
     /usr/local/mysql/bin/mysqlslap \
-    /usr/local/mysql/bin/mysqldump \
     /usr/local/mysql/bin/myisamlog \
-    /usr/local/mysql/bin/myisam_ftdump \
     /usr/local/mysql/bin/myisampack \
     /usr/local/mysql/bin/mysql_plugin \
     /usr/local/mysql/bin/mysql_upgrade \

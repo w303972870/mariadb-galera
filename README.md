@@ -1,4 +1,4 @@
-## 该版本是mariadb安装组建比较全的一个版本，已经内置了sphinx、MariaDB-Galera和xtrabackup等
+## 该版本是mariadb源码编译安装组建比较全的一个版本，已经内置了sphinx、MariaDB-Galera和xtrabackup等
 
 ```
 docker pull w303972870/mariadb-galera
@@ -23,9 +23,15 @@ docker run -dit -p 3306:3306 -v /data/mariadb/:/data/ -e MYSQL_ROOT_HOST=192.168
 |MYSQL_DATABASE|默认创建一个数据库|
 |MYSQL_USER|新建一个用户|
 |MYSQL_PASSWORD|新建用户的密码|
-|WSREP_NEW_CLUSTER|集群用参，启动集群第一台时该值传入yes其他传入no即可|
+|WSREP_NEW_CLUSTER|集群用参，作为集群时，启动集群第一台时该值传入yes其他的传入no或者不传入即可|
 
-### 启动之后，需要mysql -h 127.0.0.1 -p3306 -u root连接容器mysql后重新配置访问限制，
+### 启动之后，需要mysql -h 127.0.0.1 -p3306 -u root连接容器mysql后重新配置访问限制，例如：
+
+```
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'192.168.12.%' IDENTIFIED BY '123456' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY '123456' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'172.17.0.%' IDENTIFIED BY '123456' WITH GRANT OPTION;
+```
 
 ### 数据目录：/data/database/
 ### 日志目录：/data/logs/
@@ -165,42 +171,14 @@ innodb_lru_scan_depth = 4096
 #innodb_change_buffering = inserts
 innodb_old_blocks_time = 1000
 
-#### Redo options
-innodb_log_group_home_dir = /data/logs/
-innodb_log_buffer_size = 64M
-innodb_log_file_size = 2G
-innodb_log_files_in_group = 3
-innodb_flush_log_at_trx_commit = 1
-innodb_fast_shutdown = 2
-
-#### Transaction options
-innodb_thread_concurrency = 0
-innodb_lock_wait_timeout = 120
-innodb_rollback_on_timeout = 1
-transaction_isolation = READ-COMMITTED
-
-#### IO options
-innodb_read_io_threads = 8
-innodb_write_io_threads = 16
-innodb_io_capacity = 20000
-innodb_use_native_aio = 1
-
-#### Undo options
-innodb_purge_threads = 4
-innodb_purge_batch_size = 512
-innodb_max_purge_lag = 65536
-
-#### mariadb
-gtid_strict_mode=on
-gtid_domain_id=191
-
 #### galera
 wsrep_on=1
+wsrep_provider="/usr/lib64/galera/libgalera_smm.so"
 wsrep_cluster_name=eric_cluster
 wsrep_provider_options="gcache.size=1G"
-wsrep_cluster_address=gcomm://192.168.12.2:3306,192.168.12.3:3306,192.168.12.4:3306
+wsrep_cluster_address=gcomm://192.168.12.2,192.168.12.3,192.168.12.4
 wsrep_node_name = master_node
-wsrep_node_address=192.168.12.2:3306
+wsrep_node_address=192.168.12.2
 wsrep_slave_threads=16
 wsrep_certify_nonPK=1
 wsrep_max_ws_rows=131072
@@ -215,9 +193,8 @@ wsrep_notify_cmd=/usr/local/bin/wsrep-notify.sh
 wsrep_sst_method=xtrabackup-v2
 wsrep_sst_auth="root:123456"
 
-
 #### audit
-server_audit_file_path = /data/logs/server_audit.log
+#server_audit_file_path = /data/logs/server_audit.log
 
 [mysqldump]
 quick
