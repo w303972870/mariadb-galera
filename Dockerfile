@@ -65,9 +65,37 @@ RUN groupadd mysql && useradd -r -g mysql -s /bin/false mysql \
     && sed -i "s|Welcome to the MariaDB monitor|欢迎进入MariaDB|" client/mysql.cc    \ 
     && sed -i "s|Oracle, MariaDB Corporation Ab and others|Oracle, MariaDB版权信息声明|" include/welcome_copyright_notice.h    \ 
     && cmake . $CONFIG && make && make install && rpm -ivh galera-25.3.23-1.rhel7.el7.centos.x86_64.rpm && cd / && rm -rf /usr/local/mysql/mysql-test \
-    && yum install -y holland-xtrabackup && rm -rf /usr/src/ && rm -rf /usr/local/mysql/COPYING* /usr/local/mysql/README* \
+    && rm -rf /usr/src/ && rm -rf /usr/local/mysql/COPYING* /usr/local/mysql/README* \
     /usr/local/mysql/CREDITS /usr/local/mysql/EXCEPTIONS-CLIENT /usr/local/mysql/INSTALL-BINARY \
-    && chmod +x /usr/local/bin/docker-entrypoint.sh && chmod +x /usr/local/bin/wsrep-notify.sh && chown mysql:mysql /usr/local/bin/wsrep-notify.sh \
+    && rm -rf \ 
+    /usr/local/mysql/bin/myisam_ftdump \ 
+    /usr/local/mysql/bin/mysql_find_rows \
+    /usr/local/mysql/bin/mysql_fix_extensions \
+    /usr/local/mysql/bin/mysql_waitpid \
+    /usr/local/mysql/bin/mysqlaccess \
+    /usr/local/mysql/bin/mysqlcheck \
+    /usr/local/mysql/bin/mysqldump \
+    /usr/local/mysql/bin/mysqldumpslow \
+    /usr/local/mysql/bin/mysqlimport \
+    /usr/local/mysql/bin/mariabackup \
+    /usr/local/mysql/bin/mysqltest \
+    /usr/local/mysql/bin/myisamchk \
+    /usr/local/mysql/bin/mysql_client_test \
+    /usr/local/mysql/bin/aria_dump_log \
+    /usr/local/mysql/bin/aria_ftdump \
+    /usr/local/mysql/bin/aria_pack \
+    /usr/local/mysql/bin/aria_read_log \
+    /usr/local/mysql/bin/aria_chk \
+    /usr/local/mysql/bin/mysqlshow \
+    /usr/local/mysql/bin/mysqlslap \
+    /usr/local/mysql/bin/myisamlog \
+    /usr/local/mysql/bin/myisampack \
+    /usr/local/mysql/bin/mysql_plugin \
+    /usr/local/mysql/bin/mysql_upgrade \
+    /usr/local/mysql/bin/perror \
+    /usr/local/mysql/bin/mbstream \
+    /usr/local/mysql/bin/innochecksum \
+    && yum install -y holland-xtrabackup && chmod +x /usr/local/bin/docker-entrypoint.sh && chmod +x /usr/local/bin/wsrep-notify.sh && chown mysql:mysql /usr/local/bin/wsrep-notify.sh \
     && chmod 700 /usr/local/bin/wsrep-notify.sh && yum clean all
 
 
