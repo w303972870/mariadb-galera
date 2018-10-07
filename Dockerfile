@@ -86,7 +86,6 @@ RUN groupadd mysql && useradd -r -g mysql -s /bin/false mysql \
     /usr/local/mysql/bin/aria_pack \
     /usr/local/mysql/bin/aria_read_log \
     /usr/local/mysql/bin/aria_chk \
-    /usr/local/mysql/bin/mysqlbinlog \
     /usr/local/mysql/bin/mysqlshow \
     /usr/local/mysql/bin/mysqlslap \
     /usr/local/mysql/bin/myisamlog \
