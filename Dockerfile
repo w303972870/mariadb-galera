@@ -54,7 +54,7 @@ ENV CONFIG "\
 
 RUN groupadd mysql && useradd -r -g mysql -s /bin/false mysql \
     && mkdir -p $DATA_DIR $LOGS_DIR  ${ETC_DIR} && yum install -y \
-        cmake gcc g++ make bison kernel-devel openssl-devel openssl libxml2-devel gcc-c++  boost-program-options ncurses-devel --skip-broken \
+        cmake gcc g++ make bison kernel-devel openssl-devel openssl libxml2-devel gcc-c++ which boost-program-options ncurses-devel --skip-broken \
     && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo "Asia/Shanghai" > /etc/timezone \
     && rpm -ivh http://mirrors.ustc.edu.cn/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm && yum update -y \
     && curl "https://mirrors.shu.edu.cn/mariadb//mariadb-$MARIADB_VERSION/source/mariadb-$MARIADB_VERSION.tar.gz" -o /root/mariadb-$MARIADB_VERSION.tar.gz \

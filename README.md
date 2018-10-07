@@ -12,7 +12,7 @@ docker pull w303972870/mariadb-galera
 #### 启动命令示例：为了初始化必须指定一个默认的root密码MYSQL_ROOT_PASSWORD
 
 ```
-docker run -dit -p 3306:3306 -v /data/mariadb/:/data/ -e MYSQL_ROOT_HOST=192.168.12.% -e MYSQL_ROOT_PASSWORD=123456 -e WSREP_NEW_CLUSTER=yes docker.io/w303972870/mariadb-galera
+docker run -dit -p 3306:3306  -p 4567:4567 -p 4568:4568 -p 4444:4444 -v /data/mariadb/:/data/ -e MYSQL_ROOT_HOST=192.168.12.% -e MYSQL_ROOT_PASSWORD=123456 -e WSREP_NEW_CLUSTER=yes docker.io/w303972870/mariadb-galera
 ```
 |变量|解释|
 |:---|:---|
@@ -24,6 +24,10 @@ docker run -dit -p 3306:3306 -v /data/mariadb/:/data/ -e MYSQL_ROOT_HOST=192.168
 |MYSQL_USER|新建一个用户|
 |MYSQL_PASSWORD|新建用户的密码|
 |WSREP_NEW_CLUSTER|集群用参，作为集群时，启动集群第一台时该值传入yes其他的传入no或者不传入即可|
+
+
+### 如果使用集群必须再加上映射端口4567,4568,4444
+
 
 ### 启动之后，需要mysql -h 127.0.0.1 -p3306 -u root连接容器mysql后重新配置访问限制，例如：
 
@@ -80,7 +84,6 @@ basedir=/usr/
 datadir = /data/database/
 pid-file = /data/database/mysql.pid
 user = mysql
-bind-address = 0.0.0.0
 server-id = 1
  
 init-connect = 'SET NAMES utf8mb4'
@@ -175,10 +178,8 @@ innodb_old_blocks_time = 1000
 wsrep_on=1
 wsrep_provider="/usr/lib64/galera/libgalera_smm.so"
 wsrep_cluster_name=eric_cluster
-wsrep_provider_options="gcache.size=1G"
-wsrep_cluster_address=gcomm://192.168.12.2,192.168.12.3,192.168.12.4
+wsrep_cluster_address=gcomm://
 wsrep_node_name = master_node
-wsrep_node_address=192.168.12.2
 wsrep_slave_threads=16
 wsrep_certify_nonPK=1
 wsrep_max_ws_rows=131072
@@ -189,7 +190,7 @@ wsrep_retry_autocommit=1
 wsrep_auto_increment_control=1
 wsrep_drupal_282555_workaround=0
 wsrep_causal_reads=0
-wsrep_notify_cmd=/usr/local/bin/wsrep-notify.sh
+#wsrep_notify_cmd=/usr/local/bin/wsrep-notify.sh
 wsrep_sst_method=xtrabackup-v2
 wsrep_sst_auth="root:123456"
 
