@@ -12,7 +12,7 @@ docker pull w303972870/mariadb-galera
 #### 启动命令示例：为了初始化必须指定一个默认的root密码MYSQL_ROOT_PASSWORD
 
 ```
-docker run -dit -p 3306:3306  -p 4567:4567 -p 4568:4568 -p 4444:4444 -v /data/mariadb/:/data/ -e MYSQL_ROOT_HOST=192.168.12.% -e MYSQL_ROOT_PASSWORD=123456 -e WSREP_NEW_CLUSTER=yes docker.io/w303972870/mariadb-galera
+docker run -dit -p 3306:3306  -p 4567:4567 -p 4568:4568 -p 4444:4444 -v /data/mariadb/:/data/ -v /etc/localtime:/etc/localtime -e MYSQL_ROOT_HOST=192.168.12.% -e MYSQL_ROOT_PASSWORD=123456 -e WSREP_NEW_CLUSTER=yes docker.io/w303972870/mariadb-galera
 ```
 |变量|解释|
 |:---|:---|
