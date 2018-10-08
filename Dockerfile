@@ -57,7 +57,7 @@ RUN groupadd mysql && useradd -r -g mysql -s /bin/false mysql \
     && yum update -y \
     && mkdir -p $DATA_DIR $LOGS_DIR  ${ETC_DIR} && yum install -y \
         cmake gcc g++ make bison kernel-devel openssl-devel openssl libxml2-devel gcc-c++ lsof rsync socat nc boost-program-options ncurses-devel --skip-broken \
-    && yum install -y holland-xtrabackup which \
+    && yum install -y which \
     && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo "Asia/Shanghai" > /etc/timezone \
     && curl "https://mirrors.shu.edu.cn/mariadb//mariadb-$MARIADB_VERSION/source/mariadb-$MARIADB_VERSION.tar.gz" -o /root/mariadb-$MARIADB_VERSION.tar.gz \
     && mkdir -p /usr/src \
@@ -97,7 +97,7 @@ RUN groupadd mysql && useradd -r -g mysql -s /bin/false mysql \
     /usr/local/mysql/bin/mbstream \
     /usr/local/mysql/bin/innochecksum \
     && chmod +x /usr/local/bin/docker-entrypoint.sh && chmod +x /usr/local/bin/wsrep-notify.sh && chown mysql:mysql /usr/local/bin/wsrep-notify.sh \
-    && chmod 700 /usr/local/bin/wsrep-notify.sh && yum clean all
+    && chmod 700 /usr/local/bin/wsrep-notify.sh && yum install -y holland-xtrabackup && yum clean all
 
 
 EXPOSE 3306
