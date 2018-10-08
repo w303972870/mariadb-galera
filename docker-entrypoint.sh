@@ -3,11 +3,7 @@ set -e
 
 chmod 644 /data/etc/my.cnf
 
-_get_config() {
-  conf="$1"
-   /usr/local/mysql/bin/mysqld --verbose --help --log-bin-index="$(mktemp -u)" 2>/dev/null | awk '$1 == "'"$conf"'" { print $2; exit }'
-}
-DATA_DIR="$(_get_config 'datadir')"
+DATA_DIR="/data/database/"
 if [ ! -d "$DATA_DIR/mysql" ]; then
   if [ -z "$MYSQL_ROOT_PASSWORD" -a -z "$MYSQL_ALLOW_EMPTY_PASSWORD" -a -z "$MYSQL_RANDOM_ROOT_PASSWORD" ]; then
     echo >&2 '错误：数据库未初始化，密码选项未指定 '
