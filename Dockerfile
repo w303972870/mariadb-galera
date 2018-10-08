@@ -53,10 +53,12 @@ ENV CONFIG "\
 "
 
 RUN groupadd mysql && useradd -r -g mysql -s /bin/false mysql \
+    && rpm -ivh http://mirrors.ustc.edu.cn/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm  \
+    && yum update -y \
     && mkdir -p $DATA_DIR $LOGS_DIR  ${ETC_DIR} && yum install -y \
-        cmake gcc g++ make bison kernel-devel openssl-devel openssl libxml2-devel gcc-c++ which lsof rsync socat nc boost-program-options ncurses-devel holland-xtrabackup --skip-broken \
+        cmake gcc g++ make bison kernel-devel openssl-devel openssl libxml2-devel gcc-c++ lsof rsync socat nc boost-program-options ncurses-devel --skip-broken \
+    && yum install -y holland-xtrabackup which \
     && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo "Asia/Shanghai" > /etc/timezone \
-    && rpm -ivh http://mirrors.ustc.edu.cn/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm && yum update -y \
     && curl "https://mirrors.shu.edu.cn/mariadb//mariadb-$MARIADB_VERSION/source/mariadb-$MARIADB_VERSION.tar.gz" -o /root/mariadb-$MARIADB_VERSION.tar.gz \
     && mkdir -p /usr/src \
     && tar -zxC /usr/src -f /root/mariadb-$MARIADB_VERSION.tar.gz && rm -rf /root/mariadb-$MARIADB_VERSION.tar.gz \
