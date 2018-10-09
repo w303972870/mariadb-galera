@@ -4,6 +4,9 @@ set -e
 chmod 644 /data/etc/my.cnf
 
 DATA_DIR="/data/database/"
+
+if [[ ! -z "$SKIP_INIT_SCRIPT" ]] && [[ "$SKIP_INIT_SCRIPT" == "yes" ]];then
+
 if [ ! -d "$DATA_DIR/mysql" ]; then
   if [ -z "$MYSQL_ROOT_PASSWORD" -a -z "$MYSQL_ALLOW_EMPTY_PASSWORD" -a -z "$MYSQL_RANDOM_ROOT_PASSWORD" ]; then
     echo >&2 '错误：数据库未初始化，密码选项未指定 '
@@ -116,6 +119,9 @@ SQL
   echo '数据库初始化完成，等待启动.'
   echo
   sed -i "s|#server_audit_file_path|server_audit_file_path|" /data/etc/my.cnf
+fi
+
+
 fi
 
 chown -R mysql: "$DATA_DIR"
