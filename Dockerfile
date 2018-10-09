@@ -60,7 +60,7 @@ RUN groupadd mysql && useradd -r -g mysql -s /bin/false mysql \
     && yum install -y which libev-devel \
     && yum install -y bison numactl-libs \
     && yum install -y kernel-devel perl-Digest-MD5 \
-    && yum install -y openssl-devel \
+    && yum install -y openssl-devel perl-Time-HiRes \
     && yum install -y openssl \
     && yum install -y libxml2-devel \
     && yum install -y gcc-c++ \
