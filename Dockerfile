@@ -26,7 +26,7 @@ ENV CONFIG "\
     -DWITH_MYISAM_STORAGE_ENGINE=1 \
     -DWITH_FEDERATEDX_STORAGE_ENGINE=1\
     -DWITH_ARCHIVE_STORAGE_ENGINE=1\
-    -DCOMPILATION_COMMENT='[[[[[EricWang Compiled Database]]]]]' \
+    -DCOMPILATION_COMMENT='【EricWang Compiled Database】' \
     -DWITH_READLINE=ON \
     -DEXTRA_CHARSETS=all \
     -DWITH_SSL=system  \
