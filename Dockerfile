@@ -53,7 +53,7 @@ ENV CONFIG "\
 "
 
 RUN groupadd mysql && useradd -r -g mysql -s /bin/false mysql \
-    && yum -y install epel-release  \
+    && yum install epel-release -y \
     && yum update -y \
     && mkdir -p $DATA_DIR $LOGS_DIR  ${ETC_DIR} && yum install -y \
         cmake gcc g++ make \
