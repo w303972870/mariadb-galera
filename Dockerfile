@@ -56,17 +56,30 @@ RUN groupadd mysql && useradd -r -g mysql -s /bin/false mysql \
     && rpm -ivh http://mirrors.ustc.edu.cn/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm  \
     && yum update -y \
     && mkdir -p $DATA_DIR $LOGS_DIR  ${ETC_DIR} && yum install -y \
-        cmake gcc g++ make bison kernel-devel openssl-devel openssl libxml2-devel gcc-c++ lsof rsync socat nc boost-program-options ncurses-devel --skip-broken \
+        cmake gcc g++ make \
     && yum install -y which \
+    && yum install -y bison \
+    && yum install -y kernel-devel \
+    && yum install -y openssl-devel \
+    && yum install -y openssl \
+    && yum install -y libxml2-devel \
+    && yum install -y gcc-c++ \
+    && yum install -y lsof \
+    && yum install -y rsync \
+    && yum install -y socat \
+    && yum install -y nc \
+    && yum install -y boost-program-options \
+    && yum install -y ncurses-devel \
     && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo "Asia/Shanghai" > /etc/timezone \
     && curl "https://mirrors.shu.edu.cn/mariadb//mariadb-$MARIADB_VERSION/source/mariadb-$MARIADB_VERSION.tar.gz" -o /root/mariadb-$MARIADB_VERSION.tar.gz \
     && mkdir -p /usr/src \
     && tar -zxC /usr/src -f /root/mariadb-$MARIADB_VERSION.tar.gz && rm -rf /root/mariadb-$MARIADB_VERSION.tar.gz \
     && cd /usr/src/mariadb-$MARIADB_VERSION/ \
     && curl "http://yum.mariadb.org/10.3.9/centos/7.4/x86_64/rpms/galera-25.3.23-1.rhel7.el7.centos.x86_64.rpm" -o ./galera-25.3.23-1.rhel7.el7.centos.x86_64.rpm \
+    && curl "https://www.percona.com/downloads/XtraBackup/Percona-XtraBackup-2.4.9/binary/redhat/7/x86_64/percona-xtrabackup-24-2.4.9-1.el7.x86_64.rpm" -o ./percona-xtrabackup-24-2.4.9-1.el7.x86_64.rpm \
     && sed -i "s|Welcome to the MariaDB monitor|欢迎进入MariaDB|" client/mysql.cc    \ 
     && sed -i "s|Oracle, MariaDB Corporation Ab and others|Oracle, MariaDB版权信息声明|" include/welcome_copyright_notice.h    \ 
-    && cmake . $CONFIG && make && make install && rpm -ivh galera-25.3.23-1.rhel7.el7.centos.x86_64.rpm && cd / && rm -rf /usr/local/mysql/mysql-test \
+    && cmake . $CONFIG && make && make install && rpm -ivh galera-25.3.23-1.rhel7.el7.centos.x86_64.rpm  && rpm -ivh percona-xtrabackup-24-2.4.9-1.el7.x86_64.rpm && cd / && rm -rf /usr/local/mysql/mysql-test \
     && rm -rf /usr/src/ && rm -rf /usr/local/mysql/COPYING* /usr/local/mysql/README* \
     /usr/local/mysql/CREDITS /usr/local/mysql/EXCEPTIONS-CLIENT /usr/local/mysql/INSTALL-BINARY \
     && rm -rf \ 
@@ -97,7 +110,7 @@ RUN groupadd mysql && useradd -r -g mysql -s /bin/false mysql \
     /usr/local/mysql/bin/mbstream \
     /usr/local/mysql/bin/innochecksum \
     && chmod +x /usr/local/bin/docker-entrypoint.sh && chmod +x /usr/local/bin/wsrep-notify.sh && chown mysql:mysql /usr/local/bin/wsrep-notify.sh \
-    && chmod 700 /usr/local/bin/wsrep-notify.sh && yum install -y holland-xtrabackup && yum clean all
+    && chmod 700 /usr/local/bin/wsrep-notify.sh && yum clean all
 
 
 EXPOSE 3306
