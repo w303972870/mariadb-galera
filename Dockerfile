@@ -57,9 +57,9 @@ RUN groupadd mysql && useradd -r -g mysql -s /bin/false mysql \
     && yum update -y \
     && mkdir -p $DATA_DIR $LOGS_DIR  ${ETC_DIR} && yum install -y \
         cmake gcc g++ make perl perl-devel libaio libaio-devel perl-Time-HiRes perl-DBD-MySQL \
-    && yum install -y which \
-    && yum install -y bison \
-    && yum install -y kernel-devel \
+    && yum install -y which libev-devel \
+    && yum install -y bison numactl-libs \
+    && yum install -y kernel-devel perl-Digest-MD5 \
     && yum install -y openssl-devel \
     && yum install -y openssl \
     && yum install -y libxml2-devel \
