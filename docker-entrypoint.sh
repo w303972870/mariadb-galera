@@ -5,7 +5,7 @@ chmod 644 /data/etc/my.cnf
 
 DATA_DIR="/data/database/"
 
-if [[ ! -z "$SKIP_INIT_SCRIPT" ]] && [[ "$SKIP_INIT_SCRIPT" == "yes" ]];then
+if [[ -z "$SKIP_INIT_SCRIPT" ]] ;then
 
 if [ ! -d "$DATA_DIR/mysql" ]; then
   if [ -z "$MYSQL_ROOT_PASSWORD" -a -z "$MYSQL_ALLOW_EMPTY_PASSWORD" -a -z "$MYSQL_RANDOM_ROOT_PASSWORD" ]; then
