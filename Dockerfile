@@ -53,7 +53,7 @@ ENV CONFIG "\
 "
 
 RUN groupadd mysql && useradd -r -g mysql -s /bin/false mysql \
-    && rpm -ivh http://mirrors.ustc.edu.cn/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm  \
+    && yum -y install epel-release  \
     && yum update -y \
     && mkdir -p $DATA_DIR $LOGS_DIR  ${ETC_DIR} && yum install -y \
         cmake gcc g++ make \
