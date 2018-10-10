@@ -56,11 +56,20 @@ RUN groupadd mysql && useradd -r -g mysql -s /bin/false mysql \
     && yum install epel-release -y \
     && yum update -y \
     && mkdir -p $DATA_DIR $DATA_DIR/bin-logs/ $LOGS_DIR  ${ETC_DIR} && yum install -y \
-        cmake gcc g++ make perl perl-devel libaio libaio-devel perl-Time-HiRes perl-DBD-MySQL \
-    && yum install -y which libev-devel \
-    && yum install -y bison numactl-libs \
-    && yum install -y kernel-devel perl-Digest-MD5 \
-    && yum install -y openssl-devel perl-Time-HiRes \
+        cmake gcc g++ make      \
+    && yum install -y perl \
+    && yum install -y perl-devel \
+    && yum install -y libaio \
+    && yum install -y libaio-devel \
+    && yum install -y perl-DBD-MySQL \
+    && yum install -y which \
+    && yum install -y bison \
+    && yum install -y kernel-devel  \
+    && yum install -y openssl-devel  \
+    && yum install -y perl-Time-HiRes \
+    && yum install -y perl-Digest-MD5 \
+    && yum install -y libev-devel \
+    && yum install -y numactl-libs \
     && yum install -y openssl \
     && yum install -y libxml2-devel \
     && yum install -y gcc-c++ \
@@ -96,7 +105,6 @@ RUN groupadd mysql && useradd -r -g mysql -s /bin/false mysql \
     /usr/local/mysql/bin/mysqldump \
     /usr/local/mysql/bin/mysqldumpslow \
     /usr/local/mysql/bin/mysqlimport \
-    /usr/local/mysql/bin/mariabackup \
     /usr/local/mysql/bin/mysqltest \
     /usr/local/mysql/bin/myisamchk \
     /usr/local/mysql/bin/mysql_client_test \
