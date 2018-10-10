@@ -94,7 +94,7 @@ RUN groupadd mysql && useradd -r -g mysql -s /bin/false mysql \
     && rm -rf /usr/src/ && rm -rf /usr/local/mysql/COPYING* /usr/local/mysql/README* \
     /usr/local/mysql/CREDITS /usr/local/mysql/EXCEPTIONS-CLIENT /usr/local/mysql/INSTALL-BINARY \
     && chmod +x /usr/local/bin/docker-entrypoint.sh && chmod +x /usr/local/bin/wsrep-notify.sh && chown mysql:mysql /usr/local/bin/wsrep-notify.sh \
-    && chmod 700 /usr/local/bin/wsrep-notify.sh && yum clean all
+    && chmod 700 /usr/local/bin/wsrep-notify.sh && yum clean all && export PATH=$PATH:/usr/local/mysql/bin/
 
 
 EXPOSE 3306
