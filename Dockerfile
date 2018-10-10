@@ -87,12 +87,10 @@ RUN groupadd mysql && useradd -r -g mysql -s /bin/false mysql \
     && cd /usr/src/mariadb-$MARIADB_VERSION/ \
     && curl "http://yum.mariadb.org/10.3.9/centos/7.4/x86_64/rpms/galera-25.3.23-1.rhel7.el7.centos.x86_64.rpm" \
         -o ./galera-25.3.23-1.rhel7.el7.centos.x86_64.rpm \
-    && curl "https://www.percona.com/downloads/XtraBackup/Percona-XtraBackup-2.4.9/binary/redhat/7/x86_64/percona-xtrabackup-24-2.4.9-1.el7.x86_64.rpm" \
-        -o ./percona-xtrabackup-24-2.4.9-1.el7.x86_64.rpm \
     && sed -i "s|Welcome to the MariaDB monitor|欢迎进入MariaDB|" client/mysql.cc    \ 
     && sed -i "s|Oracle, MariaDB Corporation Ab and others|Oracle, MariaDB版权信息声明|" include/welcome_copyright_notice.h    \ 
     && cmake . $CONFIG && make && make install && rpm -ivh galera-25.3.23-1.rhel7.el7.centos.x86_64.rpm --nosignature \
-    && rpm -ivh percona-xtrabackup-24-2.4.9-1.el7.x86_64.rpm --nosignature && cd / && rm -rf /usr/local/mysql/mysql-test \
+    && cd / && rm -rf /usr/local/mysql/mysql-test \
     && rm -rf /usr/src/ && rm -rf /usr/local/mysql/COPYING* /usr/local/mysql/README* \
     /usr/local/mysql/CREDITS /usr/local/mysql/EXCEPTIONS-CLIENT /usr/local/mysql/INSTALL-BINARY \
     && rm -rf \ 
