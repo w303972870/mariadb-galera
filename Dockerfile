@@ -10,7 +10,6 @@ ADD my.cnf $ETC_DIR
 
 
 COPY docker-entrypoint.sh /usr/local/bin/ 
-COPY wsrep-notify.sh /usr/local/bin/ 
 
 ENV CONFIG "\
     -DDEFAULT_CHARSET=utf8 \
@@ -93,8 +92,8 @@ RUN groupadd mysql && useradd -r -g mysql -s /bin/false mysql \
     && cd / && rm -rf /usr/local/mysql/mysql-test \
     && rm -rf /usr/src/ && rm -rf /usr/local/mysql/COPYING* /usr/local/mysql/README* \
     /usr/local/mysql/CREDITS /usr/local/mysql/EXCEPTIONS-CLIENT /usr/local/mysql/INSTALL-BINARY \
-    && chmod +x /usr/local/bin/docker-entrypoint.sh && chmod +x /usr/local/bin/wsrep-notify.sh && chown mysql:mysql /usr/local/bin/wsrep-notify.sh \
-    && chmod 700 /usr/local/bin/wsrep-notify.sh && yum clean all && export PATH=$PATH:/usr/local/mysql/bin/:/usr/sbin/
+    && chmod +x /usr/local/bin/docker-entrypoint.sh \
+    && yum clean all && export PATH=$PATH:/usr/local/mysql/bin/:/usr/sbin/
 
 
 EXPOSE 3306
