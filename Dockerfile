@@ -99,8 +99,3 @@ RUN groupadd mysql && useradd -r -g mysql -s /bin/false mysql \
 EXPOSE 3306
 
 ENTRYPOINT ["docker-entrypoint.sh"]
-
-
-
-
-
