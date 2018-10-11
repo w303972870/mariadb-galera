@@ -56,7 +56,7 @@ RUN groupadd mysql && useradd -r -g mysql -s /bin/false mysql \
     && yum install epel-release -y \
     && yum update -y \
     && mkdir -p $DATA_DIR $DATA_DIR/bin-logs/ $LOGS_DIR  ${ETC_DIR} && yum install -y \
-        cmake gcc g++ make      \
+        cmake gcc g++ make openssh-clients \
     && yum install -y perl \
     && yum install -y perl-devel \
     && yum install -y libaio \
@@ -94,7 +94,7 @@ RUN groupadd mysql && useradd -r -g mysql -s /bin/false mysql \
     && rm -rf /usr/src/ && rm -rf /usr/local/mysql/COPYING* /usr/local/mysql/README* \
     /usr/local/mysql/CREDITS /usr/local/mysql/EXCEPTIONS-CLIENT /usr/local/mysql/INSTALL-BINARY \
     && chmod +x /usr/local/bin/docker-entrypoint.sh && chmod +x /usr/local/bin/wsrep-notify.sh && chown mysql:mysql /usr/local/bin/wsrep-notify.sh \
-    && chmod 700 /usr/local/bin/wsrep-notify.sh && yum clean all && export PATH=$PATH:/usr/local/mysql/bin/
+    && chmod 700 /usr/local/bin/wsrep-notify.sh && yum clean all && export PATH=$PATH:/usr/local/mysql/bin/:/usr/sbin/
 
 
 EXPOSE 3306
