@@ -73,7 +73,8 @@ GRANT ALL PRIVILEGES ON *.* TO 'root'@'172.17.0.%' IDENTIFIED BY '123456' WITH G
 
 ## 使用步骤
 
-1. 全新数据库需要初始化，第一台机器先初始化数据库：（先不要使用-e WSREP_NEW_CLUSTER=yes  选项，同时my.cnf先将wsrep_on=0之后执行以下命令启动容器，初始化数据库），初始化完成后需要GRANT设置访问权限
+1. 全新数据库需要初始化，第一台机器先初始化数据库：（先不要使用-e WSREP_NEW_CLUSTER=yes  选项，  
+同时my.cnf先将wsrep_on=0之后执行以下命令启动容器，初始化数据库），初始化完成后需要GRANT设置访问权限
 
 ```
 docker run -dit -p 3306:3306 --net host -p 4567:4567 -p 4568:4568 -p 4444:4444 -v /data/mariadb-galera/:/data/  -v /etc/localtime:/etc/localtime -e MYSQL_ROOT_HOST=172.17.0.% -e MYSQL_ROOT_PASSWORD=123456  docker.io/w303972870/mariadb-galera
