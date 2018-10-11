@@ -77,17 +77,20 @@ GRANT ALL PRIVILEGES ON *.* TO 'root'@'172.17.0.%' IDENTIFIED BY '123456' WITH G
 同时my.cnf先将wsrep_on=0之后执行以下命令启动容器，初始化数据库），初始化完成后需要GRANT设置访问权限
 
 ```
-docker run -dit -p 3306:3306 --net host -p 4567:4567 -p 4568:4568 -p 4444:4444 -v /data/mariadb-galera/:/data/  -v /etc/localtime:/etc/localtime -e MYSQL_ROOT_HOST=172.17.0.% -e MYSQL_ROOT_PASSWORD=123456  docker.io/w303972870/mariadb-galera
+docker run -dit -p 3306:3306 --net host -p 4567:4567 -p 4568:4568 -p 4444:4444 -v /data/mariadb-galera/:/data/  
+-v /etc/localtime:/etc/localtime -e MYSQL_ROOT_HOST=172.17.0.% -e MYSQL_ROOT_PASSWORD=123456  docker.io/w303972870/mariadb-galera
 ```
 2. 将第1步启动起来的容器结束掉，将my.cnf中的wsrep_on=1，重新启动第一台机器要加上 -e WSREP_NEW_CLUSTER=yes
 
 ```
-docker run -dit -p 3306:3306 --net host -p 4567:4567 -p 4568:4568 -p 4444:4444 -v /data/mariadb-galera/:/data/  -v /etc/localtime:/etc/localtime -e MYSQL_ROOT_HOST=172.17.0.% -e MYSQL_ROOT_PASSWORD=123456 -e WSREP_NEW_CLUSTER=yes  docker.io/w303972870/mariadb-galera
+docker run -dit -p 3306:3306 --net host -p 4567:4567 -p 4568:4568 -p 4444:4444 -v /data/mariadb-galera/:/data/  
+-v /etc/localtime:/etc/localtime -e MYSQL_ROOT_HOST=172.17.0.% -e MYSQL_ROOT_PASSWORD=123456 -e WSREP_NEW_CLUSTER=yes  docker.io/w303972870/mariadb-galera
 ```
 3. 第二台机器不需要初始化数据库，直接启动加入集群即可，但是由于没有数据库，所以需要加上-e SKIP_INIT_SCRIPT=yes跳过初始化脚本
 
 ```
-docker run -dit -p 3306:3306 --net host -p 4567:4567 -p 4568:4568 -p 4444:4444 -v /data/mariadb-galera/:/data/  -v /etc/localtime:/etc/localtime -e MYSQL_ROOT_HOST=172.17.0.% -e MYSQL_ROOT_PASSWORD=123456 -e SKIP_INIT_SCRIPT=yes  docker.io/w303972870/mariadb-galera
+docker run -dit -p 3306:3306 --net host -p 4567:4567 -p 4568:4568 -p 4444:4444 -v /data/mariadb-galera/:/data/  
+-v /etc/localtime:/etc/localtime -e MYSQL_ROOT_HOST=172.17.0.% -e MYSQL_ROOT_PASSWORD=123456 -e SKIP_INIT_SCRIPT=yes  docker.io/w303972870/mariadb-galera
 ```
 
 4. 第四台机器及以后多机器启动，跟第二台启动一样
@@ -272,7 +275,8 @@ default-character-set = utf8mb4
 
 
 
-**附上一个脚本，用来配置my.cnf中的wsrep_notify_cmd=/data/etc/wsrep-notify.sh,用来创建wsrep概要，生成'membeship'和'status'两张表，记录所有的成员和节点状态变化**
+**附上一个脚本，用来配置my.cnf中的wsrep_notify_cmd=/data/etc/wsrep-notify.sh,用来创建wsrep概要，  
+生成'membeship'和'status'两张表，记录所有的成员和节点状态变化**
 
 ```
 #!/bin/sh -eu
