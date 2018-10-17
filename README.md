@@ -50,11 +50,13 @@ GRANT ALL PRIVILEGES ON *.* TO 'root'@'172.17.0.%' IDENTIFIED BY '123456' WITH G
 ```
 /data/mariadb-galera/
 ├── database
+├── galera
 ├── bin-logs
 ├── docker-entrypoint-initdb.d
 ├── etc
 │   └── my.cnf
 └── logs
+
 ```
 
 ### docker-entrypoint-initdb.d目录内可以放置.sh,.sql,.sq.gz三类文件，作用可以看docker-entrypoint.sh
@@ -207,7 +209,7 @@ innodb_old_blocks_time = 1000
 wsrep_on=1
 wsrep_provider="/usr/lib64/galera/libgalera_smm.so"
 wsrep_cluster_name=eric_cluster
-wsrep_provider_options="pc.ignore_sb=true;pc.ignore_quorum=true"
+wsrep_provider_options="pc.ignore_sb=true;pc.ignore_quorum=true;gcache.size=5G;gcache.name=/data/galera/galera.cache"
 wsrep_cluster_address="gcomm://192.168.12.2,192.168.12.3,192.168.12.4"
 wsrep_slave_threads=16
 wsrep_node_name='manager-node'

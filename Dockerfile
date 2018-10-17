@@ -54,7 +54,7 @@ ENV CONFIG "\
 RUN groupadd mysql && useradd -r -g mysql -s /bin/false mysql \
     && yum install epel-release -y \
     && yum update -y \
-    && mkdir -p $DATA_DIR $DATA_DIR/bin-logs/ $LOGS_DIR  ${ETC_DIR} && yum install -y \
+    && mkdir -p $DATA_DIR $DATA_DIR/bin-logs/  /data/bin-logs/  /data/galera/ $LOGS_DIR  ${ETC_DIR} && yum install -y \
         cmake gcc g++ make iproute \
     && yum install -y perl \
     && yum install -y perl-devel \
